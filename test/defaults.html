@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../test-fixture/test-fixture-mocha.js"></script>
+
+    <!-- Step 1: import the element to test -->
+    <link rel="import" href="../ll-image-uploader.html">
+    <link rel="import" href="../../test-fixture/test-fixture.html">
+  </head>
+  <body>
+
+  <!-- You can use the document as a place to set up your fixtures. -->
+  <test-fixture id="fixture">
+    <template>
+      <ll-image-uploader></ll-image-uploader>
+    </template>
+  </test-fixture>
+
+  <script>
+
+    describe('Adding Files', function() {
+
+      var element;
+      beforeEach(function() {
+        element = fixture('fixture');
+        expect(element).to.be.ok;
+      });
+
+      it('should have `POST` by default', function() {
+        expect(element.method).to.be.eql('POST');
+      });
+
+
+    });
+
+  </script>
+
+  </body>
+</html>
