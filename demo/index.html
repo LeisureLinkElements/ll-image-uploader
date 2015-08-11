@@ -9,7 +9,17 @@
   </head>
   <body>
 
-  <ll-image-uploader author='{"name": "Lord Meowser", "image": "http://placekitten.com/g/200/300"}' fancy></ll-image-uploader>
+    <ll-image-uploader url="http://fake-it.com" unit-id="1234"></ll-image-uploader>
 
+    <script>
+      var element = document.querySelector('ll-image-uploader');
+      element.addEventListener('upload', function (e) {
+        console.log(e.type + ": " + JSON.stringify(e.detail));
+      });
+
+      element.addEventListener('reset', function (e) {
+        console.log(e.type);
+      });
+    </script>
   </body>
 </html>

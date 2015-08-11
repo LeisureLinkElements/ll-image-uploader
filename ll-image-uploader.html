@@ -1,7 +1,9 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-input/iron-input.html">
 <link rel="import" href="../iron-form/iron-form.html">
+
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../ll-theme/ll-theme.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -14,40 +16,31 @@ Example:
 -->
 <dom-module id="ll-image-uploader">
 
-  <style is="custom-style">
-
-    :host {
-      display: block;
-      box-sizing: border-box;
-
-      @apply(--layout-horizontal);
-    }
-
-    input {
-      border: 1px solid red;
-      padding: 10px;
-    }
-
-    ul {
-      @apply(--layout-horizontal)
-    }
-
-
-  </style>
-
-  <link rel="import" type="css" href="ll-image-uploader.css"/>
-
   <template>
-    <form is="iron-form" enctype="multipart/form-data" action="[[url]]" method="[[method]]" flex>
-      <input type="file" is="iron-input" id="uploads" multiple on-change="_uploadsChanged">
-    </form>
-    <button on-click="_cancelUpload">Cancel</button>
-    <button disabled$="[[_showUpload(_files)]]">Upload</button>
-    <ul>
-      <template is="dom-repeat" items="[[_files]]">
-        <li><span>{{item.name}}</span></li>
-      </template>
-    </ul>
+    <div class="container-fluid">
+      <form is="iron-form" enctype="multipart/form-data" action="[[url]]" method="[[method]]" id="imageForm">
+        <input type="file" name="image" is="iron-input" id="uploads" class="hidden" on-change="_uploadsFileInputFilesChanged">
+
+        <div class="row">
+          <div class="col-sm-12">
+            <button id="btnCance" class="btn btn-default" type="reset">Cancel</button>
+            <button id="btnSelectFiles" class="btn btn-primary" on-click="_selectImageButtonPressed" type="button">Select Image</button>
+            <button id="btnUpload" class="btn btn-primary hidden" on-click="_uploadButtonPressed" type="button">Upload</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <ul>
+              <template is="dom-repeat" items="[[_files]]">
+                <li><span>{{item.name}}</span></li>
+              </template>
+            </ul>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
   </template>
 
 </dom-module>
@@ -59,6 +52,13 @@ Example:
     is: 'll-image-uploader',
 
     properties: {
+
+      /**
+       * The Unit Id
+       */
+      unitId: {
+        type: String
+      },
 
       /**
        * The url for the api to publish
@@ -76,21 +76,90 @@ Example:
         value: 'POST'
       },
 
-      /**
-       * The files that have been 'dragged' onto the element
-       */
       _files: {
         type: Array,
-        value: []
+        notify: true,
+        value: function () {
+          return [];
+        }
       }
+    },
 
+    observers: [
+      '_filesChanged(_files)'
+    ],
+
+    /**
+     * Handles the internal events
+     */
+    ready: function () {
+      this.addEventListener('files-changed', this._handleFilesChanged);
+      this.addEventListener('reset', this._handleReset);
     },
 
     /**
-     * Upload files changed
+     * Cancels the form
+     * @public
+     */
+    cancel: function () {
+      this.reset();
+    },
+
+    /**
+     * Uploads and fires `upload` event
+     * @public
+     * @param {object} payload
+     * @fires `upload`
+     */
+    upload: function (payload) {
+      this._invokeUploadEvent(payload);
+    },
+
+    /**
+     * Resets the form
+     * @public
+     * @fires reset
+     */
+    reset: function () {
+      this._files = [];
+      this._invokeResetEvent();
+    },
+
+    /**
+     * Observes when the files have changed
+     * @fires `files-changed`
+     * @param {Array} files
+     */
+    _filesChanged: function (files) {
+      this._files = files || [];
+      this._invokeFilesChangedEvent();
+    },
+
+    /**
+     * Handles the `reset` event
      * @private
      */
-    _uploadsChanged: function() {
+    _handleReset: function (e) {
+      this._files = [];
+    },
+
+    /**
+     * Handles the `files-changed` event
+     * @private
+     */
+    _handleFilesChanged: function (e) {
+      var hasFiles = e.detail;
+      if (hasFiles) {
+        this.$.btnSelectFiles.classList.add('hidden');
+        this.$.btnUpload.classList.remove('hidden');
+      } else {
+        this.$.btnSelectFiles.classList.remove('hidden');
+        this.$.btnUpload.classList.add('hidden');
+      }
+    },
+
+
+    _uploadsFileInputFilesChanged: function () {
       var files = [];
       var uploadFiles = this.$.uploads.files;
       for (var i = 0; i < uploadFiles.length; i++) {
@@ -99,26 +168,59 @@ Example:
       this._files = files;
     },
 
+
     /**
-     * Resets the upload
-     * @param e
+     * Pops open the uploads file chooser
      * @private
      */
-    _cancelUpload: function(e) {
-      var form = Polymer.dom(this.root).querySelector('form');
-      form.reset();
-      this._files = [];
+    _selectImageButtonPressed: function () {
+      this.$.uploads.click();
     },
 
     /**
-     * Determines if the upload button should be enabled
-     * @param files
-     * @returns {boolean}
-     * @private
+     * Handles the upload button pressed event
      */
-    _showUpload: function(files) {
-      return files.length == 0;
+    _uploadButtonPressed: function () {
+      var payload = this.$.imageForm.serialize() || {};
+      var file = this.$.uploads.files[0];
+      if (file) {
+        payload.unitId = this.unitId;
+        payload.title = file.name;
+        payload.fileName = file.name;
+        payload.type = file.type;
+        payload.extension = file.name.substr(file.name.indexOf('.') + 1);
+      }
+      this.upload(payload);
+    },
+
+
+    /**
+     * Fires when the cancel button has been pressed
+     * @event cancelled
+     */
+
+    /**
+     * Fires when the upload button has been pressed and files are present on the upload control
+     * @event upload
+     */
+
+    /**
+     * Fires when the form has been reset
+     * @event reset
+     */
+
+    _invokeFilesChangedEvent: function () {
+      this.fire('files-changed', this._files.length > 0, { bubble: false });
+    },
+
+    _invokeResetEvent: function () {
+      this.fire('reset', {}, { bubble: false });
+    },
+
+    _invokeUploadEvent: function (payload) {
+      this.fire('upload', payload, { bubble: false });
     }
+
 
   });
 

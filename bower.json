@@ -22,7 +22,7 @@
     "polymer": "Polymer/polymer#^1.0.0",
     "iron-input": "PolymerElements/iron-input#~1.0.4",
     "iron-form": "PolymerElements/iron-form#~1.0.7",
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.0.2"
+    "ll-theme": "LeisureLinkElements/ll-theme#~0.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
