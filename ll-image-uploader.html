@@ -15,17 +15,22 @@ Example:
 @demo
 -->
 <dom-module id="ll-image-uploader">
-
   <template>
-    <div class="container-fluid">
+    <div class="image-uploader">
+      <label>Image upload </label>
+
       <form is="iron-form" enctype="multipart/form-data" action="[[url]]" method="[[method]]" id="imageForm">
         <input type="file" name="image" is="iron-input" id="uploads" class="hidden" on-change="_uploadsFileInputFilesChanged">
 
         <div class="row">
           <div class="col-sm-12">
             <button id="btnCance" class="btn btn-default" type="reset">Cancel</button>
-            <button id="btnSelectFiles" class="btn btn-primary" on-click="_selectImageButtonPressed" type="button">Select Image</button>
-            <button id="btnUpload" class="btn btn-primary hidden" on-click="_uploadButtonPressed" type="button">Upload</button>
+            <button id="btnSelectFiles" class="btn btn-default btn-file btn-file-primary" on-click="_selectImageButtonPressed" type="button">
+              Select Image
+            </button>
+            <button id="btnUpload" class="btn btn-default btn-file hidden" on-click="_uploadButtonPressed" type="button">
+              Upload
+            </button>
           </div>
         </div>
         <div class="row">
@@ -39,8 +44,6 @@ Example:
         </div>
       </form>
     </div>
-
-
   </template>
 
 </dom-module>
@@ -79,7 +82,7 @@ Example:
       _files: {
         type: Array,
         notify: true,
-        value: function () {
+        value: function() {
           return [];
         }
       }
@@ -92,7 +95,7 @@ Example:
     /**
      * Handles the internal events
      */
-    ready: function () {
+    ready: function() {
       this.addEventListener('files-changed', this._handleFilesChanged);
       this.addEventListener('reset', this._handleReset);
     },
@@ -101,7 +104,7 @@ Example:
      * Cancels the form
      * @public
      */
-    cancel: function () {
+    cancel: function() {
       this.reset();
     },
 
@@ -111,7 +114,7 @@ Example:
      * @param {object} payload
      * @fires `upload`
      */
-    upload: function (payload) {
+    upload: function(payload) {
       this._invokeUploadEvent(payload);
     },
 
@@ -120,7 +123,7 @@ Example:
      * @public
      * @fires reset
      */
-    reset: function () {
+    reset: function() {
       this._files = [];
       this._invokeResetEvent();
     },
@@ -130,7 +133,7 @@ Example:
      * @fires `files-changed`
      * @param {Array} files
      */
-    _filesChanged: function (files) {
+    _filesChanged: function(files) {
       this._files = files || [];
       this._invokeFilesChangedEvent();
     },
@@ -139,7 +142,7 @@ Example:
      * Handles the `reset` event
      * @private
      */
-    _handleReset: function (e) {
+    _handleReset: function(e) {
       this._files = [];
     },
 
@@ -147,7 +150,7 @@ Example:
      * Handles the `files-changed` event
      * @private
      */
-    _handleFilesChanged: function (e) {
+    _handleFilesChanged: function(e) {
       var hasFiles = e.detail;
       if (hasFiles) {
         this.$.btnSelectFiles.classList.add('hidden');
@@ -159,7 +162,7 @@ Example:
     },
 
 
-    _uploadsFileInputFilesChanged: function () {
+    _uploadsFileInputFilesChanged: function() {
       var files = [];
       var uploadFiles = this.$.uploads.files;
       for (var i = 0; i < uploadFiles.length; i++) {
@@ -173,14 +176,14 @@ Example:
      * Pops open the uploads file chooser
      * @private
      */
-    _selectImageButtonPressed: function () {
+    _selectImageButtonPressed: function() {
       this.$.uploads.click();
     },
 
     /**
      * Handles the upload button pressed event
      */
-    _uploadButtonPressed: function () {
+    _uploadButtonPressed: function() {
       var payload = this.$.imageForm.serialize() || {};
       var file = this.$.uploads.files[0];
       if (file) {
@@ -209,15 +212,15 @@ Example:
      * @event reset
      */
 
-    _invokeFilesChangedEvent: function () {
+    _invokeFilesChangedEvent: function() {
       this.fire('files-changed', this._files.length > 0, { bubble: false });
     },
 
-    _invokeResetEvent: function () {
+    _invokeResetEvent: function() {
       this.fire('reset', {}, { bubble: false });
     },
 
-    _invokeUploadEvent: function (payload) {
+    _invokeUploadEvent: function(payload) {
       this.fire('upload', payload, { bubble: false });
     }
 
