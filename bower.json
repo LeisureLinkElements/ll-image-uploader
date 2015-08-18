@@ -1,6 +1,6 @@
 {
   "name": "ll-image-uploader",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     "Tyler Garlick <tgarlick@leisurelink.com>"
   ],
@@ -22,7 +22,7 @@
     "polymer": "Polymer/polymer#^1.0.0",
     "iron-input": "PolymerElements/iron-input#~1.0.4",
     "iron-form": "PolymerElements/iron-form#~1.0.7",
-    "ll-theme": "LeisureLinkElements/ll-theme#~0.0.1"
+    "ll-theme": "LeisureLinkElements/ll-theme"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
