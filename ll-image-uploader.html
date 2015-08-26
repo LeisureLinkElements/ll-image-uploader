@@ -50,7 +50,7 @@ Example:
 
 <script>
 
-  Polymer({
+  LLImageUploader = Polymer({
 
     is: 'll-image-uploader',
 
@@ -77,6 +77,14 @@ Example:
       method: {
         type: String,
         value: 'POST'
+      },
+
+      /**
+       * Set to true to turn off auto uploading of images as soon as the user selects an image from the file dialog.
+       */
+      prompt: {
+        type: Boolean,
+        value: false
       },
 
       _files: {
@@ -169,6 +177,10 @@ Example:
         files.push(uploadFiles.item(i));
       }
       this._files = files;
+
+      if(!this.prompt) {
+        this._uploadButtonPressed();
+      }
     },
 
 
