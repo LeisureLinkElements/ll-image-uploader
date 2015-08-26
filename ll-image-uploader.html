@@ -76,7 +76,8 @@ Example:
        */
       prompt: {
         type: Boolean,
-        value: false
+        value: false,
+        observer: '_promptChanged'
       },
 
       _files: {
@@ -140,6 +141,9 @@ Example:
       this._invokeFilesChangedEvent();
     },
 
+    _promptChanged: function() {
+      this.toggleClass('hidden', !this.prompt, this.$.btnCancel);
+    },
     /**
      * Handles the `reset` event
      * @private
