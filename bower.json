@@ -22,7 +22,7 @@
     "iron-form": "PolymerElements/iron-form#~1.0.7",
     "iron-input": "PolymerElements/iron-input#~1.0.4",
     "ll-theme": "LeisureLinkElements/ll-theme",
-    "ll-throbber": "LeisureLinkElements/ll-throbber#fix_restructure_and_positioning",
+    "ll-throbber": "LeisureLinkElements/ll-throbber",
     "polymer": "Polymer/polymer#^1.1.0"
   },
   "devDependencies": {
