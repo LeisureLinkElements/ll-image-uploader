@@ -9,17 +9,23 @@
   </head>
   <body>
 
-    <ll-image-uploader url="http://fake-it.com" unit-id="1234"></ll-image-uploader>
+  <button id="reset" class="btn btn-default">Reset the form</button>
 
-    <script>
-      var element = document.querySelector('ll-image-uploader');
-      element.addEventListener('upload', function (e) {
-        console.log(e.type + ": " + JSON.stringify(e.detail));
-      });
+  <ll-image-uploader></ll-image-uploader>
 
-      element.addEventListener('reset', function (e) {
-        console.log(e.type);
-      });
-    </script>
+  <script>
+    var element = document.querySelector('ll-image-uploader');
+    element.addEventListener('upload', function(e) {
+      console.log(e.type + ": " + JSON.stringify(e.detail));
+    });
+
+    element.addEventListener('reset', function(e) {
+      console.log(e.type);
+    });
+
+    document.getElementById('reset').addEventListener('click', function() {
+      element.reset();
+    });
+  </script>
   </body>
 </html>

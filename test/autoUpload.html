@@ -32,6 +32,14 @@
       expect(uploadSpy.called).to.be.false;
     });
 
+    it('should hide the Cancel button if prompt is false', function() {
+      var element = new LLImageUploader();
+      element.prompt = false;
+      var cancelBtn = element.querySelector('#btnCancel');
+
+      expect(cancelBtn.classList.contains('hidden')).to.be.true;
+    });
+
   });
 
 </script>

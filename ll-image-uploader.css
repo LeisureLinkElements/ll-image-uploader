@@ -1,3 +1,37 @@
+:host.loading button {
+  display: none;
+}
+
+:host.loading #loading-container {
+  display: block;
+}
+
+:host.loading .file-names {
+  display: none;
+}
+
+/*Needed to overwrite Bootstrap styles*/
+.file-names ul {
+  margin-bottom: 0;
+}
+.file-names div {
+  min-height: 0;
+}
 
 
-/*# sourceMappingURL=ll-image-uploader.css.map */
+.image-uploader {
+  position: relative;
+}
+
+#loading-container {
+  display:none;
+  position: absolute;
+  left: calc(50% - 84px);
+  top: calc(50% - 20px);
+}
+
+#loading-container div {
+  width: 40px;
+  display: inline-block;
+  vertical-align: middle
+}

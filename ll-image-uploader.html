@@ -4,6 +4,7 @@
 
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../ll-theme/ll-theme.html">
+<link rel="import" href="../ll-throbber/ll-throbber.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -15,25 +16,33 @@ Example:
 @demo
 -->
 <dom-module id="ll-image-uploader">
+  <link rel="import" type="css" href="ll-image-uploader.css">
   <template>
     <div class="image-uploader">
       <label>Image upload </label>
 
-      <form is="iron-form" enctype="multipart/form-data" action="[[url]]" method="[[method]]" id="imageForm">
+      <div id="loading-container">
+        <div>
+          <ll-throbber active></ll-throbber>
+        </div>
+        <span>Uploading Image...</span>
+      </div>
+
+      <form is="iron-form" enctype="multipart/form-data" id="imageForm">
         <input type="file" name="image" is="iron-input" id="uploads" class="hidden" on-change="_uploadsFileInputFilesChanged">
 
-        <div class="row">
+        <div class="row" style="height: 30px;">
           <div class="col-sm-12">
-            <button id="btnCance" class="btn btn-default" type="reset">Cancel</button>
+            <button id="btnCancel" class="btn btn-default" type="reset">Cancel</button>
             <button id="btnSelectFiles" class="btn btn-default btn-file btn-file-primary" on-click="_selectImageButtonPressed" type="button">
               Select Image
             </button>
             <button id="btnUpload" class="btn btn-default btn-file hidden" on-click="_uploadButtonPressed" type="button">
               Upload
             </button>
-          </div>
+           </div>
         </div>
-        <div class="row">
+        <div class="row file-names">
           <div class="col-sm-12">
             <ul>
               <template is="dom-repeat" items="[[_files]]">
@@ -62,29 +71,13 @@ Example:
       unitId: {
         type: String
       },
-
-      /**
-       * The url for the api to publish
-       */
-      url: {
-        type: String,
-        reflectToAttribute: true
-      },
-
-      /**
-       * The HTTP method 'POST', 'PUT', etc
-       */
-      method: {
-        type: String,
-        value: 'POST'
-      },
-
       /**
        * Set to true to turn off auto uploading of images as soon as the user selects an image from the file dialog.
        */
       prompt: {
         type: Boolean,
-        value: false
+        value: false,
+        observer: '_promptChanged'
       },
 
       _files: {
@@ -123,6 +116,7 @@ Example:
      * @fires `upload`
      */
     upload: function(payload) {
+      this.toggleClass('loading', true, this);
       this._invokeUploadEvent(payload);
     },
 
@@ -132,6 +126,7 @@ Example:
      * @fires reset
      */
     reset: function() {
+      this.toggleClass('loading', false, this);
       this._files = [];
       this._invokeResetEvent();
     },
@@ -146,6 +141,9 @@ Example:
       this._invokeFilesChangedEvent();
     },
 
+    _promptChanged: function() {
+      this.toggleClass('hidden', !this.prompt, this.$.btnCancel);
+    },
     /**
      * Handles the `reset` event
      * @private

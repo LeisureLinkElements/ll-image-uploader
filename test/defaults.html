@@ -17,7 +17,7 @@
     <!-- You can use the document as a place to set up your fixtures. -->
     <test-fixture id="fixture">
       <template>
-        <ll-image-uploader unit-id="1234" url="http://somewhere.com"></ll-image-uploader>
+        <ll-image-uploader unit-id="1234"></ll-image-uploader>
       </template>
     </test-fixture>
 
@@ -31,20 +31,12 @@
           expect(element).to.be.ok;
         });
 
-        it('should have `POST` by default', function () {
-          expect(element.method).to.be.eql('POST');
-        });
-
         it('should have a unitId', function () {
           expect(element.unitId).to.be.eql('1234');
         });
 
         it('should have no files by default', function () {
           expect(element._files).to.be.empty;
-        });
-
-        it('should have the same url that is set', function () {
-          expect(element.url).to.be.eql('http://somewhere.com');
         });
 
       });
