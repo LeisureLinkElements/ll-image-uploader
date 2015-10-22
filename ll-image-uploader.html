@@ -18,8 +18,13 @@ Example:
 <dom-module id="ll-image-uploader">
   <link rel="import" type="css" href="ll-image-uploader.css">
   <template>
-    <div class="image-uploader">
-      <label>Image upload </label>
+    <div class="row">
+      <div class="col-xs-offset-10 col-xs-2">
+        <button id="btnSelectFiles" class="btn btn-default btn-file btn-file-primary pull-right" on-click="_selectImageButtonPressed" type="button">Add Photo</button>
+      </div>
+    </div>
+    <div class="image-uploader compact">
+      <!--<label>Image upload </label>-->
 
       <div id="loading-container">
         <div>
@@ -31,16 +36,13 @@ Example:
       <form is="iron-form" enctype="multipart/form-data" id="imageForm">
         <input type="file" name="image" is="iron-input" id="uploads" class="hidden" on-change="_uploadsFileInputFilesChanged">
 
-        <div class="row" style="height: 30px;">
-          <div class="col-sm-12">
-            <button id="btnCancel" class="btn btn-default" type="reset">Cancel</button>
-            <button id="btnSelectFiles" class="btn btn-default btn-file btn-file-primary" on-click="_selectImageButtonPressed" type="button">
-              Select Image
-            </button>
+        <div class="row" style="height: 1px;">
+          <div class="col-sm-2 pull-right">
+            <button id="btnCancel" class="btn btn-link" type="reset">Cancel</button>
             <button id="btnUpload" class="btn btn-default btn-file hidden" on-click="_uploadButtonPressed" type="button">
               Upload
             </button>
-           </div>
+          </div>
         </div>
         <div class="row file-names">
           <div class="col-sm-12">
@@ -62,6 +64,10 @@ Example:
   LLImageUploader = Polymer({
 
     is: 'll-image-uploader',
+
+    listeners: {
+      'll-property-image-default': '_defaultImageChange'
+    },
 
     properties: {
 
@@ -86,6 +92,11 @@ Example:
         value: function() {
           return [];
         }
+//      },
+//      readOnly: {
+//        type: Boolean,
+//        value: true,
+//        observer: '_handleReadOnlyChange'
       }
     },
 

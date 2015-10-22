@@ -14,13 +14,27 @@
 .file-names ul {
   margin-bottom: 0;
 }
+
 .file-names div {
   min-height: 0;
 }
 
-
 .image-uploader {
   position: relative;
+}
+
+.image-uploader form {
+  background: 0 0;
+  border: 2px dashed #d7d7d7;
+  border-radius: 10px;
+  font-size: .8em;
+  padding: 0;
+}
+
+.image-uploader.compact form {
+  background: 0 0;
+  border: none;
+  padding: 0;
 }
 
 #loading-container {
@@ -35,4 +49,18 @@
   height: 70px;
   display: inline-block;
   vertical-align: middle
+}
+
+#btnSelectFiles {
+  height: 45px;
+  background-color: #0069AA;
+  border-color: #0069AA;
+  color: #ffffff;
+  font-size: 1.4rem;
+  bottom: 38px;
+  position: relative;
+}
+
+#btnSelectFiles:hover {
+  background-color: #005183;
 }
