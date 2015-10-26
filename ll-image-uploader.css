@@ -1,4 +1,8 @@
-:host.loading button {
+:host.loading #btnSelectFiles, :host.loading #btnUpload {
+  display: none;
+}
+
+:host.not-loading #btnUploading {
   display: none;
 }
 
@@ -51,14 +55,19 @@
   vertical-align: middle
 }
 
-#btnSelectFiles {
+#btnSelectFiles, #btnUploading {
   height: 45px;
+  width: 175px;
   background-color: #0069AA;
   border-color: #0069AA;
   color: #ffffff;
   font-size: 1.4rem;
   bottom: 38px;
   position: relative;
+}
+
+#btnUploading {
+  cursor: default;
 }
 
 #btnSelectFiles:hover {

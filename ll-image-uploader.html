@@ -12,7 +12,7 @@ An element providing a solution to no problem in particular.
 Example:
 
     <ll-image-uploader></ll-image-uploader>
-
+hidden$="{{uploading}}"
 @demo
 -->
 <dom-module id="ll-image-uploader">
@@ -21,17 +21,19 @@ Example:
     <div class="row">
       <div class="col-xs-offset-10 col-xs-2">
         <button id="btnSelectFiles" class="btn btn-default btn-file btn-file-primary pull-right" on-click="_selectImageButtonPressed" type="button">Add Photo</button>
+        <button id="btnUploading" class="btn btn-default btn-file btn-file-primary pull-right" type="button">
+          Uploading...</button>
       </div>
     </div>
     <div class="image-uploader compact">
       <!--<label>Image upload </label>-->
 
-      <div id="loading-container">
-        <div>
-          <ll-throbber active></ll-throbber>
-        </div>
-        <span>Uploading Image...</span>
-      </div>
+      <!--<div id="loading-container">-->
+        <!--<div>-->
+          <!--<ll-throbber active></ll-throbber>-->
+        <!--</div>-->
+        <!--<span>Uploading Image...</span>-->
+      <!--</div>-->
 
       <form is="iron-form" enctype="multipart/form-data" id="imageForm">
         <input type="file" name="image" is="iron-input" id="uploads" class="hidden" on-change="_uploadsFileInputFilesChanged">
@@ -42,6 +44,7 @@ Example:
             <button id="btnUpload" class="btn btn-default btn-file hidden" on-click="_uploadButtonPressed" type="button">
               Upload
             </button>
+
           </div>
         </div>
         <div class="row file-names">
@@ -101,6 +104,7 @@ Example:
     ready: function() {
       this.addEventListener('files-changed', this._handleFilesChanged);
       this.addEventListener('reset', this._handleReset);
+      this.toggleClass('not-loading', true, this);
     },
 
     /**
@@ -108,6 +112,8 @@ Example:
      * @public
      */
     cancel: function() {
+      this.toggleClass('loading', false, this);
+      this.toggleClass('not-loading', true, this);
       this.reset();
     },
 
@@ -119,6 +125,7 @@ Example:
      */
     upload: function(payload) {
       this.toggleClass('loading', true, this);
+      this.toggleClass('not-loading', false, this);
       this._invokeUploadEvent(payload);
     },
 
@@ -129,6 +136,7 @@ Example:
      */
     reset: function() {
       this.toggleClass('loading', false, this);
+      this.toggleClass('not-loading', true, this);
       this._files = [];
       this._invokeResetEvent();
     },
@@ -162,9 +170,11 @@ Example:
       var hasFiles = e.detail;
       if (hasFiles) {
         this.$.btnSelectFiles.classList.add('hidden');
+        this.$.btnUploading.classList.remove('hidden');
         this.$.btnUpload.classList.remove('hidden');
       } else {
         this.$.btnSelectFiles.classList.remove('hidden');
+        this.$.btnUploading.classList.add('hidden');
         this.$.btnUpload.classList.add('hidden');
       }
     },
