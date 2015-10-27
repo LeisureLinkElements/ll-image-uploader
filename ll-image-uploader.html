@@ -12,28 +12,20 @@ An element providing a solution to no problem in particular.
 Example:
 
     <ll-image-uploader></ll-image-uploader>
-hidden$="{{uploading}}"
+
 @demo
 -->
 <dom-module id="ll-image-uploader">
   <link rel="import" type="css" href="ll-image-uploader.css">
   <template>
     <div class="row">
-      <div class="col-xs-offset-10 col-xs-2">
+      <div id="selectFile" class="col-xs-offset-10 col-xs-2">
         <button id="btnSelectFiles" class="btn btn-default btn-file btn-file-primary pull-right" on-click="_selectImageButtonPressed" type="button">Add Photo</button>
         <button id="btnUploading" class="btn btn-default btn-file btn-file-primary pull-right" type="button">
           Uploading...</button>
       </div>
     </div>
     <div class="image-uploader compact">
-      <!--<label>Image upload </label>-->
-
-      <!--<div id="loading-container">-->
-        <!--<div>-->
-          <!--<ll-throbber active></ll-throbber>-->
-        <!--</div>-->
-        <!--<span>Uploading Image...</span>-->
-      <!--</div>-->
 
       <form is="iron-form" enctype="multipart/form-data" id="imageForm">
         <input type="file" name="image" is="iron-input" id="uploads" class="hidden" on-change="_uploadsFileInputFilesChanged">
@@ -104,7 +96,6 @@ hidden$="{{uploading}}"
     ready: function() {
       this.addEventListener('files-changed', this._handleFilesChanged);
       this.addEventListener('reset', this._handleReset);
-      this.toggleClass('not-loading', true, this);
     },
 
     /**
@@ -113,7 +104,6 @@ hidden$="{{uploading}}"
      */
     cancel: function() {
       this.toggleClass('loading', false, this);
-      this.toggleClass('not-loading', true, this);
       this.reset();
     },
 
@@ -125,7 +115,6 @@ hidden$="{{uploading}}"
      */
     upload: function(payload) {
       this.toggleClass('loading', true, this);
-      this.toggleClass('not-loading', false, this);
       this._invokeUploadEvent(payload);
     },
 
@@ -136,7 +125,6 @@ hidden$="{{uploading}}"
      */
     reset: function() {
       this.toggleClass('loading', false, this);
-      this.toggleClass('not-loading', true, this);
       this._files = [];
       this._invokeResetEvent();
     },
@@ -219,7 +207,6 @@ hidden$="{{uploading}}"
       this.upload(payload);
     },
 
-
     /**
      * Fires when the cancel button has been pressed
      * @event cancelled
@@ -244,9 +231,12 @@ hidden$="{{uploading}}"
     },
 
     _invokeUploadEvent: function(payload) {
-      this.fire('upload', payload, { bubble: false });
+      if(payload.file !== undefined) {
+        this.fire('upload', payload, {bubble: false});
+      } else {
+        this.toggleClass('loading', false, this);
+      }
     }
-
 
   });
 

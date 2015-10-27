@@ -1,9 +1,21 @@
-:host.loading #btnSelectFiles, :host.loading #btnUpload {
+:host #btnUpload {
   display: none;
 }
 
-:host.not-loading #btnUploading {
+:host.loading #btnSelectFiles {
   display: none;
+}
+
+:host #btnUploading {
+  display: none;
+}
+
+:host.loading #btnUploading {
+  display: inline-block;
+}
+
+:host #btnSelectFiles {
+  display: inline-block;
 }
 
 :host.loading #loading-container {
