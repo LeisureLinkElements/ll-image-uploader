@@ -18,29 +18,26 @@ Example:
 <dom-module id="ll-image-uploader">
   <link rel="import" type="css" href="ll-image-uploader.css">
   <template>
-    <div class="image-uploader">
-      <label>Image upload </label>
-
-      <div id="loading-container">
-        <div>
-          <ll-throbber active></ll-throbber>
-        </div>
-        <span>Uploading Image...</span>
+    <div class="row">
+      <div id="selectFile" class="col-xs-offset-10 col-xs-2">
+        <button id="btnSelectFiles" class="btn btn-default btn-file btn-file-primary pull-right" on-click="_selectImageButtonPressed" type="button">Add Photo</button>
+        <button id="btnUploading" class="btn btn-default btn-file btn-file-primary pull-right" type="button">
+          Uploading...</button>
       </div>
+    </div>
+    <div class="image-uploader compact">
 
       <form is="iron-form" enctype="multipart/form-data" id="imageForm">
         <input type="file" name="image" is="iron-input" id="uploads" class="hidden" on-change="_uploadsFileInputFilesChanged">
 
-        <div class="row" style="height: 30px;">
-          <div class="col-sm-12">
-            <button id="btnCancel" class="btn btn-default" type="reset">Cancel</button>
-            <button id="btnSelectFiles" class="btn btn-default btn-file btn-file-primary" on-click="_selectImageButtonPressed" type="button">
-              Select Image
-            </button>
+        <div class="row" style="height: 1px;">
+          <div class="col-sm-2 pull-right">
+            <button id="btnCancel" class="btn btn-link" type="reset">Cancel</button>
             <button id="btnUpload" class="btn btn-default btn-file hidden" on-click="_uploadButtonPressed" type="button">
               Upload
             </button>
-           </div>
+
+          </div>
         </div>
         <div class="row file-names">
           <div class="col-sm-12">
@@ -106,6 +103,7 @@ Example:
      * @public
      */
     cancel: function() {
+      this.toggleClass('loading', false, this);
       this.reset();
     },
 
@@ -160,9 +158,11 @@ Example:
       var hasFiles = e.detail;
       if (hasFiles) {
         this.$.btnSelectFiles.classList.add('hidden');
+        this.$.btnUploading.classList.remove('hidden');
         this.$.btnUpload.classList.remove('hidden');
       } else {
         this.$.btnSelectFiles.classList.remove('hidden');
+        this.$.btnUploading.classList.add('hidden');
         this.$.btnUpload.classList.add('hidden');
       }
     },
@@ -207,7 +207,6 @@ Example:
       this.upload(payload);
     },
 
-
     /**
      * Fires when the cancel button has been pressed
      * @event cancelled
@@ -232,9 +231,12 @@ Example:
     },
 
     _invokeUploadEvent: function(payload) {
-      this.fire('upload', payload, { bubble: false });
+      if(payload.file !== undefined) {
+        this.fire('upload', payload, {bubble: false});
+      } else {
+        this.toggleClass('loading', false, this);
+      }
     }
-
 
   });
 
