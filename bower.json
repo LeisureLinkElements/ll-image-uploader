@@ -1,8 +1,9 @@
 {
   "name": "ll-image-uploader",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "authors": [
-    "Tyler Garlick <tgarlick@leisurelink.com>"
+    "Tyler Garlick <tgarlick@leisurelink.com>",
+    "Aaron Hickman <ahickman@leisurelink.com>"
   ],
   "description": "An image uploader tool",
   "keywords": [
