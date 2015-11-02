@@ -68,14 +68,15 @@
 }
 
 #btnSelectFiles, #btnUploading {
-  height: 45px;
-  width: 175px;
+  height: 40px;
+  width: 144px;
   background-color: #0069AA;
   border-color: #0069AA;
   color: #ffffff;
   font-size: 1.4rem;
-  bottom: 66px;
+  bottom: 91px;
   position: relative;
+  right: -15px;
 }
 
 #btnUploading {
