@@ -16,21 +16,116 @@ Example:
 @demo
 -->
 <dom-module id="ll-image-uploader">
+  <style>
+    :host #btnUpload {
+      display: none;
+    }
+
+    :host.loading #btnSelectFiles {
+      display: none;
+    }
+
+    :host #btnUploading {
+      display: none;
+    }
+
+    :host.loading #btnUploading {
+      display: inline-block;
+    }
+
+    :host #btnSelectFiles {
+      display: inline-block;
+    }
+
+    :host.loading #loading-container {
+      display: block;
+    }
+
+    :host.loading .file-names {
+      display: none;
+    }
+
+    /*Needed to overwrite Bootstrap styles*/
+    .file-names ul {
+      margin-bottom: 0;
+    }
+
+    .file-names div {
+      min-height: 0;
+    }
+
+    .image-uploader {
+      position: relative;
+    }
+
+    .image-uploader form {
+      background: 0 0;
+      border: 2px dashed #d7d7d7;
+      border-radius: 10px;
+      font-size: .8em;
+      padding: 0;
+    }
+
+    .image-uploader.compact form {
+      background: 0 0;
+      border: none;
+      padding: 0;
+    }
+
+    #loading-container {
+      display:none;
+      position: absolute;
+      left: calc(50% - 84px);
+      top: calc(50% - 20px);
+    }
+
+    #loading-container div {
+      width: 40px;
+      height: 70px;
+      display: inline-block;
+      vertical-align: middle
+    }
+
+    #btnSelectFiles, #btnUploading {
+      height: 40px;
+      width: 144px;
+      background-color: #0069AA;
+      border-color: #0069AA;
+      color: #ffffff;
+      font-size: 1.4rem;
+      bottom: 91px;
+      position: relative;
+      right: -15px;
+    }
+
+    #btnUploading {
+      cursor: default;
+    }
+
+    #btnSelectFiles:hover {
+      background-color: #005183;
+    }
+
+    .no-height {
+      height: 0;
+    }
+
+  </style>
   <link rel="import" type="css" href="ll-image-uploader.css">
   <template>
-    <div class="row">
-      <div id="selectFile" class="col-xs-offset-10 col-xs-2">
+    <div class="row no-height">
+      <div id="selectFile" class="col-xs-offset-10 col-xs-2 no-height">
         <button id="btnSelectFiles" class="btn btn-default btn-file btn-file-primary pull-right" on-click="_selectImageButtonPressed" type="button">Add Photo</button>
         <button id="btnUploading" class="btn btn-default btn-file btn-file-primary pull-right" type="button">
           Uploading...</button>
       </div>
     </div>
-    <div class="image-uploader compact">
+    <div class="image-uploader compact no-height">
 
       <form is="iron-form" enctype="multipart/form-data" id="imageForm">
         <input type="file" name="image" is="iron-input" id="uploads" class="hidden" on-change="_uploadsFileInputFilesChanged">
 
-        <div class="row" style="height: 1px;">
+        <div class="row no-height">
           <div class="col-sm-2 pull-right">
             <button id="btnCancel" class="btn btn-link" type="reset">Cancel</button>
             <button id="btnUpload" class="btn btn-default btn-file hidden" on-click="_uploadButtonPressed" type="button">
